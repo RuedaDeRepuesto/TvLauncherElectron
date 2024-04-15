@@ -1,0 +1,113 @@
+<nav class="status-bar acrylic shadow" [class.fixed]="currentApp">
+    <div class="left">
+        <p>{{currentTime |date:'medium'}}</p>
+    </div>
+    <div class="right">
+        <span role="button" (click)="addApp()" class="material-icons-outlined">add</span>
+        <span class="material-icons-outlined">{{signalIcon}}</span>
+        <span class="material-icons-outlined">{{batteryIcon}}</span>
+        <p>{{batteryLevel}}</p>
+        
+    </div>
+</nav>
+<main class="btn-container">
+    @for (a of apps; track $index) {
+        <!--
+        <div class="app acrylic rounded shadow" 
+        [style.--icon]="'url('+a.icon+')'" 
+        role="button" (click)="open(a)"
+        (mouseenter)="openedApp = a">
+
+        </div>
+        -->
+        <div class="btn-border">
+            <button class="btn app"
+            [style.--icon]="'url('+a.icon+')'" 
+            [style.--bk-color]="a.bkColor" 
+            (click)="open(a)"
+            >
+            {{a.name}}
+            </button>
+        </div>
+    }
+</main>
+
+@for (wv of apps; track $index) {
+    <div class="webview-container"  [style.--icon]="'url('+wv.icon+')'" [style.--bk-color]="wv.bkColor"  [class.show]="wv.opened">
+        @if(wv.running){
+            <webview id="wv-{{wv.name}}" [class.loaded]="wv.firstLoad" [src]="wv.url" useragent="{{wv.defaultUA}}"  (did-start-loading)="wv.loading = true" (did-stop-loading)="wv.loading = false;wv.firstLoad = true">
+    
+            </webview>
+        }
+        
+    </div>
+}
+
+<footer class="btn-container" [class.show]="currentApp && currentApp.webView && currentApp.firstLoad">
+    <div class="btn-border">
+        <button class="btn" (click)="closeApp()">
+            <span class="material-icons-outlined">
+                delete_forever
+            </span>
+        </button>
+    </div>
+
+    <div class="btn-border">
+        <button class="btn" (click)="goHome()">
+            <span class="material-icons-outlined">
+                widgets
+            </span>
+        </button>
+    </div>
+
+    <div class="btn-border" [class.hidden]="currentApp?.loading">
+        <button class="btn" (click)="currentApp!.webView!.reload()">
+            <span class="material-icons-outlined">
+                refresh
+            </span>
+        </button>
+    </div>
+
+    <div class="btn-border" [class.hidden]="!currentApp?.loading">
+        <button class="btn" (click)="currentApp?.webView?.stop()">
+            <span class="material-icons-outlined">
+                close
+            </span>
+        </button>
+    </div>
+    
+</footer>
+
+<div class="modal-wrapper btn-container">
+    @if (
+        currentEdit
+    ) {
+        <div class="app-modal border rounded acrylic shadow">
+            <img class="border shadow" [src]="currentEdit.icon" alt="">
+            <label for="name">Name</label>
+            <div class="btn-border">
+                <input class="btn" type="text" id="name" name="name" [(ngModel)]="currentEdit.name">
+            </div>
+            <label for="url">URL</label>
+            <div class="btn-border">
+                <input class="btn border" type="url" id="url" name="url" [(ngModel)]="currentEdit.url">
+            </div>
+
+            <label for="url">Icon</label>
+            <div class="btn-border">
+                <input class="btn border" type="url" id="icon" name="icon" [(ngModel)]="currentEdit.icon">
+            </div>
+
+            <label for="url">Color</label>
+            <div class="btn-border">
+                <input style="width:100%;height:48px" class="btn border" type="color" id="color" name="color" [(ngModel)]="currentEdit.bkColor">
+            </div>
+
+            <div class="btn-border">
+                <button class="btn border" style="width: 100%"><span class="material-icons-outlined">save</span> Guardar</button>
+            </div>
+            
+        </div>
+    }
+    
+</div>
