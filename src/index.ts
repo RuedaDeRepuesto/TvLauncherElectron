@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, app, ipcMain } from "electron";
+import { BrowserView, BrowserWindow, app, components, ipcMain } from "electron";
 import { TvApp } from "./app/types/app";
 import { ElectronBlocker } from "@cliqz/adblocker-electron";
 const url = require('url');
@@ -18,7 +18,7 @@ export class AppWindow{
             titleBarStyle:'hidden',
             webPreferences:{
                 webviewTag:true,
-                preload:this.fPath('./electron/preload.js')
+                preload:AppWindow.fPath('./electron/preload.js')
             }
         });
         
@@ -52,7 +52,7 @@ export class AppWindow{
         });
     }
 
-    private fPath(f:string){
+    public static fPath(f:string){
         return path.join(__dirname,f);
     }
 
@@ -62,7 +62,12 @@ export class AppWindow{
 	}
 }
 
-app.on('ready', ()=> {
+
+
+
+app.on('ready', async ()=> {
+    await components.whenReady();
+    console.log('components ready:', components.status());
     let appWindow = new AppWindow();
 });
 

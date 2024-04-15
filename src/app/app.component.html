@@ -35,7 +35,7 @@
 @for (wv of apps; track $index) {
     <div class="webview-container"  [style.--icon]="'url('+wv.icon+')'" [style.--bk-color]="wv.bkColor"  [class.show]="wv.opened">
         @if(wv.running){
-            <webview id="wv-{{wv.name}}" [class.loaded]="wv.firstLoad" [src]="wv.url" useragent="{{wv.defaultUA}}"  (did-start-loading)="wv.loading = true" (did-stop-loading)="wv.loading = false;wv.firstLoad = true">
+            <webview webpreferences="sandbox=true" id="wv-{{wv.name}}" [class.loaded]="wv.firstLoad" [src]="wv.url" useragent="{{wv.defaultUA}}"  (did-start-loading)="wv.loading = true" (did-stop-loading)="wv.loading = false;wv.firstLoad = true">
     
             </webview>
         }
