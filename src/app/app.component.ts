@@ -26,6 +26,7 @@ export class AppComponent implements OnInit,AfterViewInit {
     {name:'Youtube',bkColor:'#FF0000',url:'https://youtube.com',icon:'https://static.vecteezy.com/system/resources/previews/018/930/572/non_2x/youtube-logo-youtube-icon-transparent-free-png.png',defaultUA:'Mozilla/5.0 (PS4; Leanback Shell) Gecko/20100101 Firefox/65.0 LeanbackShell/01.00.01.75 Sony PS4/ (PS4, , no, CH)'},
     {name:'Netflix',bkColor:'#000000',url:'https://netflix.com',icon:'https://cdn-icons-png.flaticon.com/512/5977/5977590.png'},
     {name:'Disney+',bkColor:'#12277c',url:'https://disneyplus.com',icon:'https://www.svgrepo.com/show/464719/disney-plus.svg'},
+    {name:'VideoTest',bkColor:'#000000',url:'https://shaka-player-demo.appspot.com/',icon:''}
   ];
   electronSrv = inject(ElectronService);
   title = 'TVLauncher';
@@ -86,7 +87,7 @@ export class AppComponent implements OnInit,AfterViewInit {
         console.log('window focus!');
       })
 
-      this.addApp();
+      //this.addApp();
       
   }
 
