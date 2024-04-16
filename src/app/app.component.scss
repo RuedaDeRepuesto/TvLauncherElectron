@@ -143,17 +143,23 @@ footer{
 
 .modal-wrapper{
     position: fixed;
-    top: 0px;
+    top: -800px;
     left:0px;
     width: 100%;
     display: flex;
     justify-content: center;
+    transition: all cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.7s;
+    &.show{
+        top: -24px;
+    }
+
 
     .app-modal{
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
-        width: max(20vw,250px);
+        width: max(25vw,250px);
         padding:12px;
+        padding-top: 36px;
         display: flex;
         gap: 12px;
         flex-direction: column;

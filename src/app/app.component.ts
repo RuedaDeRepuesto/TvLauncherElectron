@@ -32,7 +32,21 @@ export class AppComponent implements OnInit,AfterViewInit {
   title = 'TVLauncher';
   currentTime:Date = new Date();
   openedApp:TvApp|undefined;
-  currentEdit:TvApp|undefined;
+  currentEdit:{
+    name:string;
+    url:string;
+    icon:string;
+    defaultUA:string;
+    bkColor:string;
+    show:boolean
+  }={
+    name: '',
+    url: '',
+    icon: '',
+    defaultUA: '',
+    bkColor: '',
+    show:false
+  };
   currentApp:TvApp|undefined;
   batteryIcon:string  = 'battery_unknown';
   batteryLevel:string = '';
@@ -145,7 +159,9 @@ export class AppComponent implements OnInit,AfterViewInit {
       name:'newApp',
       url:'',
       icon:'',
-      bkColor : '#000000'
+      bkColor : '#000000',
+      defaultUA:'',
+      show:true
     }
   }
 }
