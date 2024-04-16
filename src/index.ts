@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, app, components, ipcMain } from "electron";
+import { BrowserView, BrowserWindow, app, ipcMain } from "electron";
 import { TvApp } from "./app/types/app";
 import { ElectronBlocker } from "@cliqz/adblocker-electron";
 const url = require('url');
@@ -66,8 +66,7 @@ export class AppWindow{
 
 
 app.on('ready', async ()=> {
-    await components.whenReady();
-    console.log('components ready:', components.status());
+    //await components.whenReady();
     let appWindow = new AppWindow();
 });
 

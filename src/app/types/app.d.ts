@@ -12,4 +12,5 @@ export interface TvApp{
     webView?:WebviewTag;
     disableAdBlock?:boolean;
     bkColor:string;
+    desktopApp:boolean
 }
