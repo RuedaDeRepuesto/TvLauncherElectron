@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, app, ipcMain } from "electron";
+import { BrowserView, BrowserWindow, app, ipcMain, shell } from "electron";
 import { TvApp } from "./app/types/app";
 import { ElectronBlocker } from "@cliqz/adblocker-electron";
 const url = require('url');
@@ -9,12 +9,20 @@ export class AppWindow{
 
     private win:BrowserWindow;
     appWebview: BrowserView|undefined;
+
+
+    appSettings: {
+        isServed: boolean;
+        windowed: boolean;
+    };
+
     constructor(){
+        this.appSettings = this.getConfig();
         this.win = new BrowserWindow({
             width: 1280,
             height: 800,
             title:'Angular Electron App',
-            fullscreen:true,
+            fullscreen:!this.appSettings.windowed,
             titleBarStyle:'hidden',
             webPreferences:{
                 webviewTag:true,
@@ -22,12 +30,9 @@ export class AppWindow{
             }
         });
         
-        let isServed = false;
-        if(process.argv.find(i => i.includes('--serve'))){
-            isServed = true;
-        }
+     
     
-        if(!isServed){
+        if(!this.appSettings.isServed){
             this.win.loadURL(url.format({      
                 pathname: path.join(
                     __dirname,
@@ -45,10 +50,30 @@ export class AppWindow{
         });
     }
 
+    private getConfig(){
+        let config = {
+            windowed:false,
+            isServed:false
+        };
+        if(process.argv.find(i => i.includes('--serve'))){
+            config.isServed = true;
+        }
+
+        if(process.argv.find(i => i.includes('--windowed'))){
+            config.windowed = true;
+        }
+        return config;
+    }
+
 
     private addElectronEvents(){
         ipcMain.on('app-close',(e:any) =>{
             app.exit();
+        });
+
+        ipcMain.on('open-url',(e:any,payload:TvApp) =>{
+            console.log(e);
+            shell.openExternal(payload.url);
         });
     }
 

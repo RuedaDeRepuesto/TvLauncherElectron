@@ -1,12 +1,14 @@
 <nav class="status-bar acrylic shadow" [class.fixed]="currentApp">
     <div class="left">
-        <p>{{currentTime |date:'medium'}}</p>
+        <span role="button" (click)="addApp()" class="material-icons-outlined">add</span>
     </div>
     <div class="right">
-        <span role="button" (click)="addApp()" class="material-icons-outlined">add</span>
         <span class="material-icons-outlined">{{signalIcon}}</span>
-        <span class="material-icons-outlined">{{batteryIcon}}</span>
-        <p>{{batteryLevel}}</p>
+        @if(batteryLevel < 100 && batteryLevel >= 0){
+            <span class="material-icons-outlined">{{batteryIcon}}</span>
+            <p>{{batteryLevel}} %</p>
+        }
+        <p style="margin-right: 8px;">{{currentTime |date:'medium'}}</p>
         
     </div>
 </nav>
@@ -33,7 +35,7 @@
 </main>
 
 @for (wv of apps; track $index) {
-    <div class="webview-container"  [style.--icon]="'url('+wv.icon+')'" [style.--bk-color]="wv.bkColor"  [class.show]="wv.opened">
+    <div class="webview-container" [style.--icon]="'url('+wv.icon+')'" [style.--bk-color]="wv.bkColor"  [class.show]="wv.opened">
         @if(wv.running){
             <webview webpreferences="sandbox=true" id="wv-{{wv.name}}" [class.loaded]="wv.firstLoad" [src]="wv.url" useragent="{{wv.defaultUA}}"  (did-start-loading)="wv.loading = true" (did-stop-loading)="wv.loading = false;wv.firstLoad = true">
     

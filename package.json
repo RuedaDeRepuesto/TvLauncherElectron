@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "electronp": "npm run belectron && electron ./dist/browser/index.js --serve",
-    "serve": "ng serve & npm run belectron && electron ./dist/browser/index.js --serve",
+    "electronp": "npm run belectron && electron ./dist/browser/index.js --serve --windowed",
+    "serve": "ng serve & npm run belectron && electron ./dist/browser/index.js --serve --windowed",
     "build": "ng build && npm run belectron && electron ./dist/browser/index.js",
     "publish": "ng build && npm run belectron && cp package.json dist/browser && npx @electron/packager dist/browser --out dist",
     "belectron": "tsc -p tsconfig.win.json"

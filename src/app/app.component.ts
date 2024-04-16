@@ -9,6 +9,7 @@ import { applyEffect } from "fluent-reveal-effect"
 import { BatteryInfo, Device } from '@capacitor/device';
 import { Network } from '@capacitor/network';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,14 +21,13 @@ import { Network } from '@capacitor/network';
 })
 export class AppComponent implements OnInit,AfterViewInit {
 
-
-
   apps:TvApp[]=[
-    {name:'Youtube',desktopApp:true,bkColor:'#FF0000',url:'https://youtube.com',icon:'https://static.vecteezy.com/system/resources/previews/018/930/572/non_2x/youtube-logo-youtube-icon-transparent-free-png.png',defaultUA:'Mozilla/5.0 (PS4; Leanback Shell) Gecko/20100101 Firefox/65.0 LeanbackShell/01.00.01.75 Sony PS4/ (PS4, , no, CH)'},
-    {name:'Netflix',desktopApp:false,bkColor:'#000000',url:'https://netflix.com',icon:'https://cdn-icons-png.flaticon.com/512/5977/5977590.png'},
-    {name:'Disney+',desktopApp:false,bkColor:'#12277c',url:'https://disneyplus.com',icon:'https://www.svgrepo.com/show/464719/disney-plus.svg'},
-    {name:'VideoTest',desktopApp:false,bkColor:'#000000',url:'https://shaka-player-demo.appspot.com/',icon:''}
+    {name:'Youtube',desktopApp:false,bkColor:'#FF0000',url:'http://youtube.com',icon:'https://static.vecteezy.com/system/resources/previews/018/930/572/non_2x/youtube-logo-youtube-icon-transparent-free-png.png',defaultUA:'Mozilla/5.0 (PS4; Leanback Shell) Gecko/20100101 Firefox/65.0 LeanbackShell/01.00.01.75 Sony PS4/ (PS4, , no, CH)'},
+    {name:'Netflix',desktopApp:true,bkColor:'#000000',url:'https://netflix.com',icon:'https://cdn-icons-png.flaticon.com/512/5977/5977590.png'},
+    {name:'Disney+',desktopApp:true,bkColor:'#12277c',url:'https://disneyplus.com',icon:'https://www.svgrepo.com/show/464719/disney-plus.svg'},
+    {name:'Google',desktopApp:false,bkColor:'#ffffff',url:'https://google.com',icon:'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png'}
   ];
+
   electronSrv = inject(ElectronService);
   title = 'TVLauncher';
   currentTime:Date = new Date();
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit,AfterViewInit {
   };
   currentApp:TvApp|undefined;
   batteryIcon:string  = 'battery_unknown';
-  batteryLevel:string = '';
+  batteryLevel:number = -1;
   signalIcon = 'wifi_off';
 
   batteryIcons =[
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit,AfterViewInit {
 
           this.batteryIcon = this.batteryIcons[cindex];
         }
-        this.batteryLevel = Math.round((energy.batteryLevel??0)*100)+'%';
+        this.batteryLevel = Math.round((energy.batteryLevel??0)*100);
         const network = await Network.getStatus();
         if(network.connected){
           if(network.connectionType == 'cellular'){
@@ -122,14 +122,19 @@ export class AppComponent implements OnInit,AfterViewInit {
   
 
   async open(a:TvApp){
-    a.opened = true;
-    this.currentApp = a;
-    if(!a.running){
-      await lastValueFrom(timer(1000));
-      a.running = true;
-      await lastValueFrom(timer(1000));
-      a.webView = document.getElementById('wv-'+a.name) as WebviewTag;
+    if(a.desktopApp){
+      this.electronSrv.openUrl(a);
+    }else{
+      a.opened = true;
+      this.currentApp = a;
+      if(!a.running){
+        await lastValueFrom(timer(1000));
+        a.running = true;
+        await lastValueFrom(timer(1000));
+        a.webView = document.getElementById('wv-'+a.name) as WebviewTag;
+      }
     }
+    
   }
 
 
