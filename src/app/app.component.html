@@ -78,36 +78,37 @@
     
 </footer>
 
-<div class="modal-wrapper btn-container">
-    @if (
-        currentEdit
-    ) {
-        <div class="app-modal border rounded acrylic shadow">
-            <img class="border shadow" [src]="currentEdit.icon" alt="">
-            <label for="name">Name</label>
-            <div class="btn-border">
-                <input class="btn" type="text" id="name" name="name" [(ngModel)]="currentEdit.name">
-            </div>
-            <label for="url">URL</label>
-            <div class="btn-border">
-                <input class="btn border" type="url" id="url" name="url" [(ngModel)]="currentEdit.url">
-            </div>
+<div class="modal-wrapper btn-container" [class.show]="currentEdit.show">
+    <div class="app-modal border rounded acrylic shadow" >
+        <img class="border shadow" [src]="currentEdit.icon" alt="">
+        <label for="name">Name</label>
+        <div class="btn-border">
+            <input class="btn" type="text" id="name" name="name" [(ngModel)]="currentEdit.name">
+        </div>
+        <label for="url">URL</label>
+        <div class="btn-border">
+            <input class="btn border" type="url" id="url" name="url" [(ngModel)]="currentEdit.url">
+        </div>
 
-            <label for="url">Icon</label>
-            <div class="btn-border">
-                <input class="btn border" type="url" id="icon" name="icon" [(ngModel)]="currentEdit.icon">
-            </div>
+        <label for="url">Icon</label>
+        <div class="btn-border">
+            <input class="btn border" type="url" id="icon" name="icon" [(ngModel)]="currentEdit.icon">
+        </div>
 
-            <label for="url">Color</label>
-            <div class="btn-border">
-                <input style="width:100%;height:48px" class="btn border" type="color" id="color" name="color" [(ngModel)]="currentEdit.bkColor">
-            </div>
+        <label for="url">Color</label>
+        <div class="btn-border">
+            <input style="width:100%;height:48px" class="btn border" type="color" id="color" name="color" [(ngModel)]="currentEdit.bkColor">
+        </div>
 
-            <div class="btn-border">
+        <div style="display: flex;">
+            <div class="btn-border" style="flex:1;">
                 <button class="btn border" style="width: 100%"><span class="material-icons-outlined">save</span> Guardar</button>
             </div>
-            
+            <div class="btn-border" style="flex:1;">
+                <button class="btn border" style="width: 100%" (click)="currentEdit.show = false"><span class="material-icons-outlined">close</span> Cerrar</button>
+            </div>
         </div>
-    }
+        
+    </div>
     
 </div>
